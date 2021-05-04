@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/ui_screens/home_screen.dart';
+import 'package:restaurant_listings/ui_screens/home_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override

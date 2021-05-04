@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/ui_screens/bottom_navigation.dart';
+import 'package:restaurant_listings/ui_screens/bottom_navigation.dart';
 
 void main() {
   runApp(MyApp());

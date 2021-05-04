@@ -26,6 +26,7 @@ dependencies:
 
   #Font Awesome Library
   font_awesome_flutter: ^9.0.0
+  rename: ^1.3.1
   #Image Slider
   #carousel_pro: ^1.0.0
   carousel_slider: 4.0.0-nullsafety.0

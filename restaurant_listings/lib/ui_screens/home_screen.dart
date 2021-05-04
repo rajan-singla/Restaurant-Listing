@@ -2,7 +2,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_application_1/ui_screens/restaurant_containers.dart';
+import 'package:restaurant_listings/ui_screens/restaurant_containers.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
