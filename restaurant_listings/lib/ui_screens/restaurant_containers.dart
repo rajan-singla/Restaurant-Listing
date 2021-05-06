@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_listings/Models/home_model.dart';
+import 'package:restaurant_listings/constants/constants.dart';
 
 class RestaurantContainers extends StatefulWidget {
+  RestaurantContainers({Key key, this.nearByData}) : super(key: key);
+  final List<NearBy> nearByData;
+
   @override
   _RestaurantContainersState createState() => _RestaurantContainersState();
 }
@@ -30,15 +35,17 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    List<NearBy> nearbyList = widget.nearByData;
+
     return SizedBox(
       height: 220.0,
       width: size.width,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: carouselImages.length,
+        itemCount: nearbyList.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: index == carouselImages.length - 1
+            padding: index == nearbyList.length - 1
                 ? EdgeInsets.fromLTRB(16.0, 0, 16.0, 0)
                 : EdgeInsets.fromLTRB(16.0, 0, 0, 0),
             child: IntrinsicWidth(
@@ -50,8 +57,12 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
                     width: size.width * 0.65,
                     height: 120.0,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: carouselImages[index]),
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        ConstantUrl.URL + nearbyList[index].images[0].image,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 8.0,
@@ -61,7 +72,7 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "The Outlet",
+                          nearbyList[index].name,
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),
@@ -86,7 +97,13 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
                                   width: 5.0,
                                 ),
                                 Text(
-                                  '4.7',
+                                  nearbyList[index]
+                                              .ratingAvg
+                                              .toString()
+                                              .length ==
+                                          1
+                                      ? '${nearbyList[index].ratingAvg}.0'
+                                      : '${nearbyList[index].ratingAvg}',
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ],
@@ -97,14 +114,16 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
                     ),
                   ),
                   Text(
-                    'Italian Restaurant',
+                    nearbyList[index].category.name,
                     style: TextStyle(color: Colors.grey),
                   ),
                   SizedBox(
                     height: 8.0,
                   ),
                   Text(
-                    r'Avg Cost - $50 for 2 people',
+                    r'Avg Cost - $' +
+                        nearbyList[index].avgCost +
+                        'for 2 people',
                     style: TextStyle(color: Colors.black87),
                   ),
                   SizedBox(
@@ -122,9 +141,12 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
                         SizedBox(
                           width: 5.0,
                         ),
-                        Text(
-                          "Disneyland naheim, California",
-                          style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                        Flexible(
+                          child: Text(
+                            nearbyList[index].address,
+                            style:
+                                TextStyle(fontSize: 12.0, color: Colors.grey),
+                          ),
                         ),
                       ],
                     ),
@@ -139,10 +161,8 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
   }
 }
 
-
 class AllHomeImages {
-
-   static List<Widget> carouselImages = [
+  static List<Widget> carouselImages = [
     Image.asset("assets/pic1.jpg", fit: BoxFit.cover),
     Image.asset(
       "assets/pic2.jpg",
