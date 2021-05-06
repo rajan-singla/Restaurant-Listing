@@ -138,3 +138,27 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
     );
   }
 }
+
+
+class AllHomeImages {
+
+   static List<Widget> carouselImages = [
+    Image.asset("assets/pic1.jpg", fit: BoxFit.cover),
+    Image.asset(
+      "assets/pic2.jpg",
+      fit: BoxFit.cover,
+    ),
+    Image.asset(
+      "assets/pic3.jpg",
+      fit: BoxFit.cover,
+    ),
+    Image.asset(
+      "assets/pic4.jpg",
+      fit: BoxFit.cover,
+    ),
+    Image.asset(
+      "assets/pic5.jpg",
+      fit: BoxFit.cover,
+    ),
+  ];
+}

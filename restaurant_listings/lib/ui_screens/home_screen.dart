@@ -1,10 +1,8 @@
-//import 'package:carousel_pro/carousel_pro.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_listings/app/services/api.dart';
-import 'package:restaurant_listings/app/services/api_service.dart';
+import 'package:restaurant_listings/Models/home_model.dart';
 import 'package:restaurant_listings/providers/home_provider.dart';
 import 'package:restaurant_listings/ui_screens/restaurant_containers.dart';
 
@@ -14,38 +12,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> carouselImages = [
-    Image.asset("assets/pic1.jpg", fit: BoxFit.fill),
-    Image.asset(
-      "assets/pic2.jpg",
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      "assets/pic3.jpg",
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      "assets/pic4.jpg",
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      "assets/pic5.jpg",
-      fit: BoxFit.fill,
-    ),
-  ];
-
-  void func() async {
-    final apiService = new APIService(API.sandbox());
-    final accessToken = await apiService.getHomeData();
-    print(accessToken);
-  }
+  // void func() async {
+  //   final apiService = new APIService(API.sandbox());
+  //   final accessToken = await apiService.getHomeData();
+  //   print(accessToken);
+  // }
 
   @override
   void initState() {
     super.initState();
     final homeMD1 = Provider.of<HomeDataProvider>(context, listen: false);
     homeMD1.getPostData();
+    //_updateHomeData();
   }
+
+  // Future<void> _updateHomeData() async {
+  //   final homeMD1 = Provider.of<HomeDataProvider>(context, listen: false);
+  //   await homeMD1.getPostData();
+  //   setState(() => _homeModelData = Provider.of<HomeDataProvider>(context));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 4.0,
                           ),
                           IconButton(
-                            onPressed: func,
+                            onPressed: () {},
                             icon: Icon(
                               Icons.keyboard_arrow_down,
                               color: Colors.white,
@@ -125,51 +110,76 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.center,
               child: CircularProgressIndicator(),
             )
-          : ListView(
-              children: [
-                SizedBox(
-                  height: 200.0,
-                  width: size.width,
-                  child: CarouselSlider(
-                    items: carouselImages,
-                    options: CarouselOptions(
-                      viewportFraction: 1.0,
-                      reverse: false,
-                      scrollDirection: Axis.horizontal,
-                      disableCenter: true,
-                      autoPlay: true,
-                      pauseAutoPlayOnTouch: true,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 16.0),
-                  child: Text(
-                    "Trending Restaurants",
-                    style:
-                        TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                RestaurantContainers(),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 16.0),
-                  child: Text(
-                    "Nearby Restaurants",
-                    style:
-                        TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                RestaurantContainers(),
-              ],
+          : HomeListView(
+              size: size,
+              data: homeMdl.homePostData.data,
             ),
+    );
+  }
+}
+
+class HomeListView extends StatefulWidget {
+  HomeListView({Key key, this.size, this.data}) : super(key: key);
+  final Size size;
+  final Data data;
+
+  @override
+  _HomeListViewState createState() => _HomeListViewState();
+}
+
+class _HomeListViewState extends State<HomeListView> {
+  @override
+  Widget build(BuildContext context) {
+    List<HomeBanner> bannersList = widget.data.banners;
+    print(bannersList.map((e) => e.image).toList());
+
+    return ListView(
+      children: [
+        SizedBox(
+          height: 200.0,
+          width: widget.size.width,
+          child: CarouselSlider(
+            items: bannersList
+                .map(
+                  (e) => Image.network(
+                    "http://54.188.121.69:8000" + e.image,
+                    fit: BoxFit.cover,
+                  ),
+                )
+                .toList(),
+            options: CarouselOptions(
+              viewportFraction: 1.0,
+              reverse: false,
+              scrollDirection: Axis.horizontal,
+              disableCenter: true,
+              autoPlay: true,
+              pauseAutoPlayOnTouch: true,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 10.0,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          child: Text(
+            "Trending Restaurants",
+            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+          ),
+        ),
+        RestaurantContainers(),
+        SizedBox(
+          height: 10.0,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          child: Text(
+            "Nearby Restaurants",
+            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+          ),
+        ),
+        RestaurantContainers(),
+      ],
     );
   }
 }

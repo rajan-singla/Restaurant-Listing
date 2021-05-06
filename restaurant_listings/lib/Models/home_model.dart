@@ -36,14 +36,14 @@ class Data {
     this.latest,
   });
 
-  List<Banner> banners;
+  List<HomeBanner> banners;
   List<NearBy> nearBy;
   List<dynamic> trending;
   List<Latest> latest;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        banners:
-            List<Banner>.from(json["banners"].map((x) => Banner.fromJson(x))),
+        banners: List<HomeBanner>.from(
+            json["banners"].map((x) => HomeBanner.fromJson(x))),
         nearBy:
             List<NearBy>.from(json["nearBy"].map((x) => NearBy.fromJson(x))),
         trending: List<dynamic>.from(json["trending"].map((x) => x)),
@@ -59,8 +59,8 @@ class Data {
       };
 }
 
-class Banner {
-  Banner({
+class HomeBanner {
+  HomeBanner({
     this.offer,
     this.link,
     this.vendorId,
@@ -90,7 +90,7 @@ class Banner {
   int v;
   String bannerId;
 
-  factory Banner.fromJson(Map<String, dynamic> json) => Banner(
+  factory HomeBanner.fromJson(Map<String, dynamic> json) => HomeBanner(
         offer: Offer.fromJson(json["offer"]),
         link: json["link"],
         vendorId: json["vendorId"],
@@ -170,7 +170,7 @@ class Latest {
   Category category;
   int offerCount;
   int ratingAvg;
-  List<Image> images;
+  List<ImageData> images;
   String latestId;
   String avgCost;
 
@@ -187,7 +187,8 @@ class Latest {
         category: Category.fromJson(json["category"]),
         offerCount: json["offerCount"],
         ratingAvg: json["ratingAvg"],
-        images: List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
+        images: List<ImageData>.from(
+            json["images"].map((x) => ImageData.fromJson(x))),
         latestId: json["id"],
         avgCost: json["avgCost"] == null ? null : json["avgCost"],
       );
@@ -251,8 +252,8 @@ class Category {
       };
 }
 
-class Image {
-  Image({
+class ImageData {
+  ImageData({
     this.id,
     this.image,
     this.restaurantId,
@@ -270,7 +271,7 @@ class Image {
   int v;
   String imageId;
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory ImageData.fromJson(Map<String, dynamic> json) => ImageData(
         id: json["_id"],
         image: json["image"],
         restaurantId: json["restaurantId"],
@@ -322,7 +323,7 @@ class NearBy {
   String name;
   String avgCost;
   Category category;
-  List<Image> images;
+  List<ImageData> images;
   int ratingAvg;
   int offerCount;
 
@@ -339,7 +340,8 @@ class NearBy {
         name: json["name"],
         avgCost: json["avgCost"],
         category: Category.fromJson(json["category"]),
-        images: List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
+        images: List<ImageData>.from(
+            json["images"].map((x) => ImageData.fromJson(x))),
         ratingAvg: json["ratingAvg"],
         offerCount: json["offerCount"],
       );
