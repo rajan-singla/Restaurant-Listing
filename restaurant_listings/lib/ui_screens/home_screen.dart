@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_listings/Models/home_model.dart';
+import 'package:restaurant_listings/constants/constants.dart';
 import 'package:restaurant_listings/providers/home_provider.dart';
 import 'package:restaurant_listings/ui_screens/restaurant_containers.dart';
 
@@ -131,6 +132,7 @@ class _HomeListViewState extends State<HomeListView> {
   @override
   Widget build(BuildContext context) {
     List<HomeBanner> bannersList = widget.data.banners;
+    List<NearBy> nearByList = widget.data.nearBy;
     print(bannersList.map((e) => e.image).toList());
 
     return ListView(
@@ -141,8 +143,8 @@ class _HomeListViewState extends State<HomeListView> {
           child: CarouselSlider(
             items: bannersList
                 .map(
-                  (e) => Image.network(
-                    "http://54.188.121.69:8000" + e.image,
+                  (imageItem) => Image.network(
+                    ConstantUrl.URL + imageItem.image,
                     fit: BoxFit.cover,
                   ),
                 )
@@ -167,7 +169,7 @@ class _HomeListViewState extends State<HomeListView> {
             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
           ),
         ),
-        RestaurantContainers(),
+        RestaurantContainers(nearByData: nearByList),
         SizedBox(
           height: 10.0,
         ),
@@ -178,7 +180,7 @@ class _HomeListViewState extends State<HomeListView> {
             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
           ),
         ),
-        RestaurantContainers(),
+        RestaurantContainers(nearByData: nearByList),
       ],
     );
   }
