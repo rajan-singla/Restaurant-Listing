@@ -69,7 +69,7 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
                           decoration: BoxDecoration(
                             border: Border.all(
                                 width: 2.0, color: Colors.lightGreen[700]),
-                            color: Colors.green[900],
+                            color: Colors.lightGreen[700],
                             borderRadius: BorderRadius.circular(50.0),
                           ),
                           child: Padding(
