@@ -69,7 +69,7 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
                           decoration: BoxDecoration(
                             border: Border.all(
                                 width: 2.0, color: Colors.lightGreen[700]),
-                            color: Colors.green[900],
+                            color: Colors.lightGreen[700],
                             borderRadius: BorderRadius.circular(50.0),
                           ),
                           child: Padding(
@@ -137,4 +137,28 @@ class _RestaurantContainersState extends State<RestaurantContainers> {
       ),
     );
   }
+}
+
+
+class AllHomeImages {
+
+   static List<Widget> carouselImages = [
+    Image.asset("assets/pic1.jpg", fit: BoxFit.cover),
+    Image.asset(
+      "assets/pic2.jpg",
+      fit: BoxFit.cover,
+    ),
+    Image.asset(
+      "assets/pic3.jpg",
+      fit: BoxFit.cover,
+    ),
+    Image.asset(
+      "assets/pic4.jpg",
+      fit: BoxFit.cover,
+    ),
+    Image.asset(
+      "assets/pic5.jpg",
+      fit: BoxFit.cover,
+    ),
+  ];
 }
