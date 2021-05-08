@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_listings/MediaQueryClasses/size_config.dart';
 import 'package:restaurant_listings/ui_screens/home_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -33,6 +34,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Scaffold(
       body: routeList(_selectedIndex).page,
       bottomNavigationBar: BottomNavigationBar(
+        type:BottomNavigationBarType.fixed,
         backgroundColor: Colors.black,
         items: <BottomNavigationBarItem>[
           bottomNavigationBarItems(
@@ -85,12 +87,12 @@ class Screen2 extends StatelessWidget {
       children: [
         Image.asset("assets/maintenance.png", fit: BoxFit.cover),
         SizedBox(
-          height: 20.0,
+          height: SizeConfig.heightMultiplier * 3.2,
         ),
         Text(
           'Under Maintenance',
           style: TextStyle(
-              fontSize: 20.0,
+              fontSize: SizeConfig.heightMultiplier * 3.2,
               fontWeight: FontWeight.bold,
               color: Colors.lightGreen[700]),
         )

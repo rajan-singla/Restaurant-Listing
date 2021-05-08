@@ -2,8 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_listings/DeviceType/device_type.dart';
+import 'package:restaurant_listings/MediaQueryClasses/different_sizes.dart';
+import 'package:restaurant_listings/MediaQueryClasses/size_config.dart';
 import 'package:restaurant_listings/Models/home_model.dart';
 import 'package:restaurant_listings/constants/constants.dart';
+import 'package:restaurant_listings/enums/device_screen_type.dart';
 import 'package:restaurant_listings/providers/home_provider.dart';
 import 'package:restaurant_listings/ui_screens/restaurant_containers.dart';
 
@@ -38,90 +42,96 @@ class _HomeScreenState extends State<HomeScreen> {
     final homeMdl = Provider.of<HomeDataProvider>(context);
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightGreen[700],
-        bottom: PreferredSize(
-          preferredSize: Size.copy(Size.fromHeight(10.0)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Stack(
-              alignment: Alignment.topLeft,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 2.0),
-                  child: Text(
-                    "hi, vivenna",
-                    style: TextStyle(
-                        fontSize: 15.0,
-                        letterSpacing: 1.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
+
+    return LayoutBuilder(
+      builder: (context,constraints) {
+        SizeConfig().init(constraints, MediaQuery.of(context).orientation,MediaQuery.of(context));
+        final orientationType = getDeviceType(MediaQuery.of(context));
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.lightGreen[700],
+            bottom: PreferredSize(
+              preferredSize: Size.copy(Size.fromHeight(size10(orientationType))),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: size16(orientationType)),
+                child: Stack(
+                  alignment: Alignment.topLeft,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: size2(orientationType)),
+                      child: Text(
+                        "hi, vivenna",
+                        style: TextStyle(
+                            fontSize: size15(orientationType),
+                            letterSpacing: 1.0,
                             color: Colors.white,
-                            size: 15.0,
-                          ),
-                          SizedBox(
-                            width: 5.0,
-                          ),
-                          Text(
-                            "Disneyland naheim, California",
-                            style:
-                                TextStyle(fontSize: 12.0, color: Colors.white),
-                          ),
-                          SizedBox(
-                            width: 4.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: size8(orientationType)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.white,
+                                size: size15(orientationType),
+                              ),
+                              SizedBox(
+                                width: size5(orientationType),
+                              ),
+                              Text(
+                                "Disneyland naheim, California",
+                                style:
+                                TextStyle(fontSize: size12(orientationType), color: Colors.white),
+                              ),
+                              SizedBox(
+                                width: size4(orientationType),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.white,
+                                  size: size15(orientationType),
+                                ),
+                              ),
+                            ],
                           ),
                           IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.white,
-                              size: 15.0,
-                            ),
-                          ),
+                              icon: Icon(
+                                Icons.notifications_none,
+                                color: Colors.white,
+                              ),
+                              onPressed: null),
                         ],
                       ),
-                      IconButton(
-                          icon: Icon(
-                            Icons.notifications_none,
-                            color: Colors.white,
-                          ),
-                          onPressed: null),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-      body: homeMdl.loading
-          ? Container(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(),
-            )
-          : HomeListView(
-              size: size,
-              data: homeMdl.homePostData.data,
-            ),
-    );
+          body: homeMdl.loading
+              ? Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          )
+              : HomeListView(
+            orientationType: orientationType,
+            data: homeMdl.homePostData.data,
+          ),
+        );
+      });
   }
 }
 
 class HomeListView extends StatefulWidget {
-  HomeListView({Key key, this.size, this.data}) : super(key: key);
-  final Size size;
+  HomeListView({Key key, this.orientationType, this.data}) : super(key: key);
+  final DeviceScreenType orientationType;
   final Data data;
 
   @override
@@ -138,14 +148,14 @@ class _HomeListViewState extends State<HomeListView> {
     return ListView(
       children: [
         SizedBox(
-          height: 200.0,
-          width: widget.size.width,
+          height: size200(widget.orientationType),
+          width: SizeConfig.screenFullWidth,
           child: CarouselSlider(
             items: bannersList
                 .map(
                   (imageItem) => Image.network(
                     ConstantUrl.URL + imageItem.image,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 )
                 .toList(),
@@ -160,27 +170,27 @@ class _HomeListViewState extends State<HomeListView> {
           ),
         ),
         SizedBox(
-          height: 10.0,
+          height: size10(widget.orientationType),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          padding: EdgeInsets.symmetric(horizontal: size16(widget.orientationType), vertical: size16(widget.orientationType)),
           child: Text(
             "Trending Restaurants",
-            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: size15(widget.orientationType), fontWeight: FontWeight.bold),
           ),
         ),
-        RestaurantContainers(nearByData: nearByList),
+        RestaurantContainers(orientationType: widget.orientationType,nearByData: nearByList),
         SizedBox(
-          height: 10.0,
+          height: size10(widget.orientationType),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          padding: EdgeInsets.symmetric(horizontal: size16(widget.orientationType), vertical: size8(widget.orientationType)),
           child: Text(
             "Nearby Restaurants",
-            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: size15(widget.orientationType), fontWeight: FontWeight.bold),
           ),
         ),
-        RestaurantContainers(nearByData: nearByList),
+        RestaurantContainers(orientationType: widget.orientationType,nearByData: nearByList),
       ],
     );
   }
