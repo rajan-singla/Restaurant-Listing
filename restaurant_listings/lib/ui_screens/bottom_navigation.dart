@@ -13,9 +13,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
   TabbedScreens routeList(index) {
     List widgetOptions;
     widgetOptions = [
-      TabbedScreens(page: HomeScreen()),
+      TabbedScreens(page: MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: MediaQuery.of(context).textScaleFactor.clamp(1.0, 1.5)),child: HomeScreen())),
+      //TabbedScreens(page: HomeScreen()),
       TabbedScreens(page: Screen2()),
-      TabbedScreens(page: HomeScreen()),
+      TabbedScreens(page: MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: MediaQuery.of(context).textScaleFactor.clamp(1.0, 1.5)),child: HomeScreen())),
+      //TabbedScreens(page: HomeScreen()),
       TabbedScreens(page: Screen2()),
       TabbedScreens(page: Screen2()),
     ];
@@ -34,8 +38,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Scaffold(
       body: routeList(_selectedIndex).page,
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0.0,
         type:BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         items: <BottomNavigationBarItem>[
           bottomNavigationBarItems(
             icon: Icon(Icons.home),

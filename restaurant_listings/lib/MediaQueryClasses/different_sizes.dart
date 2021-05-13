@@ -17,10 +17,16 @@ size16(orientationType) => orientationType == DeviceScreenType.Mobile ? heightMu
 size20(orientationType) => orientationType == DeviceScreenType.Mobile ? heightMultiplier * 3 : widthMultiplier * 2.6;
 size50(orientationType) => orientationType == DeviceScreenType.Mobile ? heightMultiplier * 8 : widthMultiplier * 7;
 size120(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight / 5.2 : screenFullHeight / 6.2;
+size180(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight / 3.3 : screenFullHeight / 3.6;
 size200(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight / 3 : screenFullHeight / 4;
 size220(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight / 2.85 : screenFullHeight / 3.2;
-
-
+size240(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight / 2.50 : screenFullHeight / 2.85;
+size250(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight / 2.40 : screenFullHeight / 2.75;
+size260(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight / 2.30 : screenFullHeight / 2.65;
+size280(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight / 2.20 : screenFullHeight / 2.55;
+size1_2(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight * 0.5 : screenFullHeight / 0.4;
+size1_3(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight * 0.4 : screenFullHeight / 0.3;
+size1_4(orientationType) => orientationType == DeviceScreenType.Mobile ? screenFullHeight * 0.25 : screenFullHeight / 0.15;
 
 // final size2 = getDeviceType(mediaQueryData) == DeviceScreenType.Mobile ? widthMultiplier / 2 : widthMultiplier / 1.5;
 // final size4 = getDeviceType(mediaQueryData) == DeviceScreenType.Mobile ? widthMultiplier : widthMultiplier * 0.75;

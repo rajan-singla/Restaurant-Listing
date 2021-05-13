@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:restaurant_listings/Models/restaurant_model.dart';
 import 'package:restaurant_listings/providers/home_provider.dart';
 import 'package:restaurant_listings/ui_screens/bottom_navigation.dart';
 
 void main() {
-  runApp(DevicePreview(builder: (context) => MyApp(),));
+  //runApp(DevicePreview(builder: (context) =>  MyApp(),));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
         return MultiProvider(
           providers: providers,
           child: MaterialApp(
-            builder: DevicePreview.appBuilder,
+            //builder: DevicePreview.appBuilder,
             debugShowCheckedModeBanner: false,
             title: 'Restaurant Listings',
             theme: ThemeData(

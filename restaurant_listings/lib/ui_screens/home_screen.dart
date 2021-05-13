@@ -6,10 +6,13 @@ import 'package:restaurant_listings/DeviceType/device_type.dart';
 import 'package:restaurant_listings/MediaQueryClasses/different_sizes.dart';
 import 'package:restaurant_listings/MediaQueryClasses/size_config.dart';
 import 'package:restaurant_listings/Models/home_model.dart';
+import 'package:restaurant_listings/app/services/api.dart';
+import 'package:restaurant_listings/app/services/api_service.dart';
 import 'package:restaurant_listings/constants/constants.dart';
 import 'package:restaurant_listings/enums/device_screen_type.dart';
 import 'package:restaurant_listings/providers/home_provider.dart';
 import 'package:restaurant_listings/ui_screens/restaurant_containers.dart';
+import 'package:restaurant_listings/utils/shared_ui.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,11 +20,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // void func() async {
-  //   final apiService = new APIService(API.sandbox());
-  //   final accessToken = await apiService.getHomeData();
-  //   print(accessToken);
-  // }
+  void func() async {
+    final apiService = new APIService(API.sandbox());
+    final accessToken = await apiService.getRestaurantData(restaurantId: "5f4d3d2f7933b27106cfbb40");
+    print(accessToken);
+  }
 
   @override
   void initState() {
@@ -42,90 +45,97 @@ class _HomeScreenState extends State<HomeScreen> {
     final homeMdl = Provider.of<HomeDataProvider>(context);
     Size size = MediaQuery.of(context).size;
 
-
-    return LayoutBuilder(
-      builder: (context,constraints) {
-        SizeConfig().init(constraints, MediaQuery.of(context).orientation,MediaQuery.of(context));
-        final orientationType = getDeviceType(MediaQuery.of(context));
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.lightGreen[700],
-            bottom: PreferredSize(
-              preferredSize: Size.copy(Size.fromHeight(size10(orientationType))),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: size16(orientationType)),
-                child: Stack(
-                  alignment: Alignment.topLeft,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: size2(orientationType)),
-                      child: Text(
-                        "hi, vivenna",
-                        style: TextStyle(
-                            fontSize: size15(orientationType),
-                            letterSpacing: 1.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: size8(orientationType)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_on,
+    return LayoutBuilder(builder: (context, constraints) {
+      SizeConfig().init(constraints, MediaQuery.of(context).orientation,
+          MediaQuery.of(context));
+      final orientationType = getDeviceType(MediaQuery.of(context));
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.lightGreen[700],
+          title: SizedBox(
+            height: kToolbarHeight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: size2(orientationType),
+                ),
+                Text(
+                  "Hi, Vivianna",
+                  style: TextStyle(
+                      fontSize: size15(orientationType),
+                      letterSpacing: 1.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: size2(orientationType),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                              size: size15(orientationType),
+                            ),
+                            SizedBox(
+                              width: size5(orientationType),
+                            ),
+                            Text(
+                              "Disneyland naheim, California",
+                              style: TextStyle(
+                                  fontSize: size12(orientationType),
+                                  color: Colors.white),
+                            ),
+                            SizedBox(
+                              width: size4(orientationType),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                print("tapped");
+                                return func();
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
                                 color: Colors.white,
                                 size: size15(orientationType),
                               ),
-                              SizedBox(
-                                width: size5(orientationType),
-                              ),
-                              Text(
-                                "Disneyland naheim, California",
-                                style:
-                                TextStyle(fontSize: size12(orientationType), color: Colors.white),
-                              ),
-                              SizedBox(
-                                width: size4(orientationType),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Colors.white,
-                                  size: size15(orientationType),
-                                ),
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                              icon: Icon(
-                                Icons.notifications_none,
-                                color: Colors.white,
-                              ),
-                              onPressed: null),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: () {
+                          print("tapped");
+                        },
+                        child: Icon(
+                          Icons.notifications_none,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
-          body: homeMdl.loading
-              ? Container(
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(),
-          )
-              : HomeListView(
-            orientationType: orientationType,
-            data: homeMdl.homePostData.data,
-          ),
-        );
-      });
+        ),
+        body: homeMdl.loading
+            ? circularIndicatorWithoutScaffold()
+            : HomeListView(
+                orientationType: orientationType,
+                data: homeMdl.homePostData.data,
+              ),
+      );
+    });
   }
 }
 
@@ -144,18 +154,19 @@ class _HomeListViewState extends State<HomeListView> {
     List<HomeBanner> bannersList = widget.data.banners;
     List<NearBy> nearByList = widget.data.nearBy;
     print(bannersList.map((e) => e.image).toList());
+    DeviceScreenType orientationType = widget.orientationType;
 
     return ListView(
       children: [
         SizedBox(
-          height: size200(widget.orientationType),
+          height: size200(orientationType),
           width: SizeConfig.screenFullWidth,
           child: CarouselSlider(
             items: bannersList
                 .map(
                   (imageItem) => Image.network(
                     ConstantUrl.URL + imageItem.image,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 )
                 .toList(),
@@ -170,27 +181,33 @@ class _HomeListViewState extends State<HomeListView> {
           ),
         ),
         SizedBox(
-          height: size10(widget.orientationType),
+          height: size10(orientationType),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: size16(widget.orientationType), vertical: size16(widget.orientationType)),
+          padding: EdgeInsets.symmetric(
+              horizontal: size16(orientationType),
+              vertical: size16(orientationType)),
           child: Text(
             "Trending Restaurants",
-            style: TextStyle(fontSize: size15(widget.orientationType), fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: size16(orientationType), fontWeight: FontWeight.bold),
           ),
         ),
-        RestaurantContainers(orientationType: widget.orientationType,nearByData: nearByList),
-        SizedBox(
-          height: size10(widget.orientationType),
-        ),
+        RestaurantContainers(
+            orientationType: orientationType, nearByData: nearByList),
+
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: size16(widget.orientationType), vertical: size8(widget.orientationType)),
+          padding: EdgeInsets.symmetric(
+              horizontal: size16(orientationType),
+              vertical: size8(orientationType)),
           child: Text(
             "Nearby Restaurants",
-            style: TextStyle(fontSize: size15(widget.orientationType), fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: size16(orientationType), fontWeight: FontWeight.bold),
           ),
         ),
-        RestaurantContainers(orientationType: widget.orientationType,nearByData: nearByList),
+        RestaurantContainers(
+            orientationType: orientationType, nearByData: nearByList),
       ],
     );
   }
